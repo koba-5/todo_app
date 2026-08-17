@@ -1,0 +1,40 @@
+x-flyway: &flyway
+  image: flyway/flyway:11.10.0
+  volumes:
+    - ./tools/flyway/migrations:/flyway/migrations
+    - ./tools/flyway/conf:/flyway/conf
+
+services:
+  openapi-generator:
+    image: openapitools/openapi-generator-cli:v7.24.0
+    container_name: openapi-generator
+    volumes:
+      - ./tools/openapi-generator/spec:/spec
+      - ./backend/generated:/export
+  oracle:
+    image: container-registry.oracle.com/database/free:23.26.0.0
+    container_name: oracle
+    environment:
+      ORACLE_PWD: oracle
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./volumes/oracle:/opt/oracle/oradata
+  flyway-clean:
+    container_name: flyway-clean
+    <<: *flyway
+    command: clean
+  flyway-migrate:
+    container_name: flyway-migrate
+    <<: *flyway
+    command: migrate
+  flyway-info:
+    container_name: flyway-info
+    <<: *flyway
+    command: info
+  schemaspy:
+    image: schemaspy/schemaspy
+    volumes:
+      - ./tools/schemaspy/properties/schemaspy.properties:/schemaspy.properties
+      - ./tools/schemaspy/export:/output
+      - ./tools/schemaspy/drivers:/drivers
