@@ -1,0 +1,9 @@
+post:
+  summary: ログアウト
+  tags:
+    - API0001
+  security:
+    - bearerAuth: []
+  responses:
+    "204":
+      description: No Content

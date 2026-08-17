@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: OpenAPI
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+tags:
+  - name: 認証
+    x-displayName: 認証
+
+x-tagGroups:
+  - name: 認証
+    tags:
+      - API0000
+      - API0001
+      - API0002
+  - name: ユーザ
+    tags:
+      - API0010
+      - API0011
+      - API0012
+  - name: 評価項目
+    tags:
+      - API0020
+      - API0021
+      - API0022
+      - API0023
+  - name: 評価
+    tags:
+      - API0030
+      - API0031
+      - API0032
+      - API0033
+      - API0034
+  - name: 目標
+    tags:
+      - API0040
+      - API0041
+      - API0042
+      - API0043
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /auth/register:
+    $ref: './auth/register/.yaml'
+  /auth/login:
+    $ref: './auth/login/.yaml'
+  /auth/logout:
+    $ref: './auth/logout/.yaml'
+  /users:
+    $ref: './users/.yaml'
+  /assessments:
+    $ref: './assessments/.yaml'
+  /assessments/{assessmentId}:
+    $ref: './assessments/assessmentId/.yaml'
+  /assessments/items:
+    $ref: './assessments/items/.yaml'
+  /goals:
+    $ref: './goals/.yaml'

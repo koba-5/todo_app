@@ -1,0 +1,61 @@
+get:
+  summary: ユーザ情報取得
+  tags:
+    - API0010
+  security:
+    - bearerAuth: []
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fullName:
+                type: string
+              email:
+                type: string
+              birthday:
+                type: string
+                format: date
+            required:
+              - fullName
+              - email
+              - birthday
+put:
+  summary: ユーザ情報更新
+  tags:
+    - API0011
+  security:
+    - bearerAuth: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            fullName:
+              type: string
+            email:
+              type: string
+            birthday:
+              type: string
+              format: date
+          required:
+            - fullName
+            - email
+            - birthday
+    required: true
+  responses:
+    "204":
+      description: No Content
+delete:
+  summary: 退会
+  tags:
+    - API0012
+  security:
+    - bearerAuth: []
+  responses:
+    "204":
+      description: No Content

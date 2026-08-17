@@ -1,0 +1,111 @@
+get:
+  summary: 評価の一覧取得
+  tags:
+    - API0030
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: month
+      in: query
+      description: 評価月
+      required: true
+      schema:
+        type: array
+        items:
+          type: string
+          format: date
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                assessmentId:
+                  type: integer
+                name:
+                  type: string
+                value:
+                  type: integer
+              required:
+                - assessmentId
+                - name
+                - value
+post:
+  summary: 評価の新規作成
+  tags:
+    - API0031
+  security:
+    - bearerAuth: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              assessmentItemId:
+                type: integer
+              value:
+                type: integer
+            required:
+              - assessmentItemId
+              - value
+    required: true
+  responses:
+    "201":
+      description: Created
+put:
+  summary: 評価の更新
+  tags:
+    - API0032
+  security:
+    - bearerAuth: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              assessmentId:
+                type: integer
+              assessmentItemId:
+                type: integer
+              value:
+                type: integer
+            required:
+              - assessmentId
+              - assessmentItemId
+              - value
+    required: true
+  responses:
+    "204":
+      description: Updated
+delete:
+  summary: 評価の削除
+  tags:
+    - API0033
+  security:
+    - bearerAuth: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              assessmentId:
+                type: integer
+            required:
+              - assessmentId
+    required: true
+  responses:
+    "204":
+      description: Deleted

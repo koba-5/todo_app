@@ -1,0 +1,13 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "redocly preview-docs ./src/root.yaml --port 8080",
+    "export": "redocly build-docs ./src/root.yaml --output ./export/openapi.html && swagger-merger -i ./src/root.yaml --output ./export/openapi.yaml"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@redocly/cli": "^1.34.4",
+    "swagger-merger": "1.5.4"
+  }
+}

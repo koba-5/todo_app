@@ -1,0 +1,28 @@
+get:
+  summary: 評価の詳細取得
+  tags:
+    - API0034
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: assessmentId
+      in: path
+      description: 評価ID
+      required: true
+      schema:
+        type: number
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: integer
+            required:
+              - name
+              - value

@@ -1,0 +1,28 @@
+post:
+  summary: ユーザ登録
+  tags:
+    - API0002
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+            fullName:
+              type: string
+            birthDate:
+              type: string
+              format: date
+          required:
+            - email
+            - password
+            - fullName
+            - birthDate
+    required: true
+  responses:
+    "201":
+      description: Created
