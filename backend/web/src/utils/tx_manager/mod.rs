@@ -8,14 +8,14 @@ pub(crate) struct TxManager {
 }
 
 impl TxManager {
-    pub async fn new() -> Self {
+    pub(crate) async fn new() -> Self {
         let config = Config::new();
         Self {
             pool: PgPool::connect(&config.database_url).await.unwrap(),
         }
     }
 
-    pub async fn execute<F, T>(&self, f: F) -> Result<T, sqlx::Error>
+    pub(crate) async fn execute<F, T>(&self, f: F) -> Result<T, sqlx::Error>
     where
         F: AsyncFnOnce(&mut PgTransaction) -> Result<T, sqlx::Error>,
     {
@@ -30,5 +30,20 @@ impl TxManager {
                 Err(e)
             }
         }
+    }
+
+    pub(crate) async fn execute_read_only<F, T>(&self, f: F) -> Result<T, sqlx::Error>
+    where
+        F: AsyncFnOnce(&PgPool) -> Result<T, sqlx::Error>,
+    {
+        let mut tx = self.pool.begin().await?;
+
+        sqlx::query("SET TRANSACTION READ ONLY")
+            .execute(&mut *tx)
+            .await?;
+
+        let v = f(&self.pool).await?;
+        tx.rollback().await?;
+        Ok(v)
     }
 }
