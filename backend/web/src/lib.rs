@@ -1,5 +1,5 @@
 pub mod app;
-pub mod domain;
+mod domain;
 pub mod handler;
-pub mod repository;
-pub mod utils;
+mod repository;
+mod utils;
