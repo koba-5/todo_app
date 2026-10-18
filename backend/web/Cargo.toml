@@ -7,3 +7,5 @@ edition = "2024"
 time = { version = "0.3.55" }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = { version = "1.0.154" }
+axum = { version = "0.8.9" }
+tokio = { version = "1.53.3", features = ["full"] }
