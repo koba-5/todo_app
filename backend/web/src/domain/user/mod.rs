@@ -4,10 +4,10 @@ use crate::domain::Error;
 pub mod repository;
 
 pub(crate) struct User {
-    user_id: Option<i64>,
-    name: String,
-    email: String,
-    password: String,
+    pub(crate) user_id: Option<i64>,
+    pub(crate) name: String,
+    pub(crate) email: String,
+    pub(crate) password: String,
 }
 
 impl User {
