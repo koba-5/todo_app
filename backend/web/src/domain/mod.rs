@@ -1,5 +1,6 @@
 pub(crate) mod user;
 
+#[derive(Debug)]
 pub(crate) struct Error {
     cause: Cause,
     pub(crate) message: String,
@@ -14,6 +15,8 @@ impl Error {
     }
 }
 
+#[derive(Debug)]
 pub(crate) enum Cause {
     ValidationError,
+    InternalServerError,
 }
