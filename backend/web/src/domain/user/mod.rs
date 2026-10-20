@@ -1,10 +1,11 @@
 use crate::domain::Cause::{InternalServerError, ValidationError};
 use crate::domain::Error;
 use crate::utils::hash::hash_password;
+use sqlx::FromRow;
 
 pub mod repository;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, FromRow)]
 pub(crate) struct User {
     pub(crate) user_id: Option<i64>,
     pub(crate) name: String,

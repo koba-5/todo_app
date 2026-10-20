@@ -34,7 +34,7 @@ impl TxManager {
 
     pub(crate) async fn execute_read_only<F, T>(&self, f: F) -> Result<T, sqlx::Error>
     where
-        F: AsyncFnOnce(&PgPool) -> Result<T, sqlx::Error>,
+        F: AsyncFnOnce(&mut PgTransaction) -> Result<T, sqlx::Error>,
     {
         let mut tx = self.pool.begin().await?;
 
@@ -42,7 +42,7 @@ impl TxManager {
             .execute(&mut *tx)
             .await?;
 
-        let v = f(&self.pool).await?;
+        let v = f(&mut tx).await?;
         tx.rollback().await?;
         Ok(v)
     }
