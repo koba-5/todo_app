@@ -10,3 +10,5 @@ serde_json = { version = "1.0.154" }
 sqlx = { version = "0.9", features = ["postgres", "runtime-tokio", "tls-rustls", "macros"] }
 axum = { version = "0.8.9" }
 tokio = { version = "1.53.3", features = ["full"] }
+argon2 = { version = "0.6.0" }
+password-hash = { version = "0.6.1" }
