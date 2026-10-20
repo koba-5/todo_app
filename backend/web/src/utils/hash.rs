@@ -23,8 +23,8 @@ pub fn verify_password(password: &str, stored_hash: &str) -> bool {
 #[cfg(test)]
 mod tests {
     mod hash_and_verify {
-        use password_hash::Error;
         use crate::utils::hash::{hash_password, verify_password};
+        use password_hash::Error;
 
         #[test]
         fn success() -> Result<(), Error> {
@@ -32,10 +32,10 @@ mod tests {
             let password = "p@ssw0rd";
 
             // when
-            let actual = verify_password(password,&hash_password(password)?);
+            let actual = verify_password(password, &hash_password(password)?);
 
             // then
-            assert!(actual);
+            assert_eq!(true, actual);
             Ok(())
         }
     }
