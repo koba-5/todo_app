@@ -1,14 +1,15 @@
-use crate::utils::tx_manager::config::Config;
+use crate::utils::tx_executor::config::Config;
 use sqlx::{PgPool, PgTransaction};
 
 mod config;
 
-pub(crate) struct TxManager {
+#[derive(Clone)]
+pub struct TxExecutor {
     pool: PgPool,
 }
 
-impl TxManager {
-    pub(crate) async fn new() -> Self {
+impl TxExecutor {
+    pub async fn new() -> Self {
         let config = Config::new();
         Self {
             pool: PgPool::connect(&config.database_url).await.unwrap(),
