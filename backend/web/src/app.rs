@@ -1,11 +1,13 @@
 use crate::utils::config::from_env;
 use crate::utils::logger::Logger;
+use crate::utils::tx_executor::TxExecutor;
 use axum::body::Body;
 use axum::http::Request;
 use axum::middleware::Next;
 use axum::response::Response;
 use axum::{Router, middleware, serve};
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tokio::net::TcpListener;
 
 pub struct App {
@@ -14,7 +16,11 @@ pub struct App {
 }
 
 impl App {
-    pub fn new(public_router: Router, protected_router: Router) -> Self {
+    pub fn new(
+        public_router: Router<Arc<TxExecutor>>,
+        protected_router: Router<Arc<TxExecutor>>,
+        tx_executor: Arc<TxExecutor>,
+    ) -> Self {
         let ip = from_env("SERVER_IP");
         let port = from_env("SERVER_PORT");
         let addr = format!("{}:{}", ip, port).parse::<SocketAddr>().unwrap();
@@ -25,7 +31,8 @@ impl App {
                 "/protected",
                 protected_router.layer(middleware::from_fn(Self::auth)),
             )
-            .layer(middleware::from_fn(Self::logging));
+            .layer(middleware::from_fn(Self::logging))
+            .with_state(tx_executor);
 
         Self { router, addr }
     }
