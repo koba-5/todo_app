@@ -11,10 +11,9 @@ pub fn hash_password(password: &str) -> Result<String, Error> {
 pub fn verify_password(password: &str, stored_hash: &str) -> bool {
     let parsed_hash = match PasswordHash::new(stored_hash) {
         Ok(h) => h,
-        Err(_) => return false, // フォーマットが不正な場合は検証失敗
+        Err(_) => return false,
     };
 
-    // 2. 入力されたパスワードを同じ条件でハッシュ化し、保存されていたハッシュと比較
     Argon2::default()
         .verify_password(password.as_bytes(), &parsed_hash)
         .is_ok()
