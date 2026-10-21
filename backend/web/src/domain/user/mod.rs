@@ -32,7 +32,7 @@ impl User {
         if name.is_empty() {
             return Err(Error::new(ValidationError, "name is empty"));
         }
-        if name.len() > 50 {
+        if name.chars().count() > 50 {
             return Err(Error::new(ValidationError, "name is too long"));
         }
         Ok(())
@@ -42,7 +42,7 @@ impl User {
         if email.is_empty() {
             return Err(Error::new(ValidationError, "email is empty"));
         }
-        if email.len() > 50 {
+        if email.chars().count() > 50 {
             return Err(Error::new(ValidationError, "email is too long"));
         }
         Ok(())
@@ -52,7 +52,7 @@ impl User {
         if password.is_empty() {
             return Err(Error::new(ValidationError, "password is empty"));
         }
-        if password.len() > 50 {
+        if password.chars().count() > 50 {
             return Err(Error::new(ValidationError, "password is too long"));
         }
         Ok(())
