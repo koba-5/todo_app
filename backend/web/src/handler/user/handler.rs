@@ -1,3 +1,4 @@
+use crate::app::app_state::AppState;
 use crate::handler::error::Cause::BadRequest;
 use crate::handler::error::Error;
 use crate::handler::user::post_request::PostRequest;
@@ -15,7 +16,7 @@ pub(super) struct UserHandler;
 
 impl UserHandler {
     pub(super) async fn get_handler(
-        State(tx_executor): State<Arc<TxExecutor>>,
+        State(app_state): State<AppState>,
         Query(params): Query<HashMap<String, String>>,
     ) -> Result<impl IntoResponse, Error> {
         let user_id = params
@@ -25,20 +26,20 @@ impl UserHandler {
             .map_err(|_| Error::new(BadRequest, "user_id is required"))?;
 
         let user_repository = UserRepositoryReal::new();
-        let response = UserUseCase::new(tx_executor, user_repository)
+        let response = UserUseCase::new(app_state.tx_executor,app_state.jwt, user_repository)
             .get(user_id)
             .await?;
         Ok((StatusCode::OK, Json(response)))
     }
 
     pub(super) async fn post_handler(
-        State(tx_executor): State<Arc<TxExecutor>>,
+        State(app_state): State<AppState>,
         Json(request): Json<PostRequest>,
     ) -> Result<impl IntoResponse, Error> {
         let user_repository = UserRepositoryReal::new();
-        let response = UserUseCase::new(tx_executor, user_repository)
+        let response = UserUseCase::new(app_state.tx_executor,app_state.jwt, user_repository)
             .post(&request)
             .await?;
-        Ok((StatusCode::CREATED, response))
+        Ok((StatusCode::CREATED, Json(response)))
     }
 }
