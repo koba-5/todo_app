@@ -7,7 +7,8 @@ use time::Duration;
 mod claims;
 mod config;
 
-struct Jwt {
+#[derive(Clone)]
+pub struct Jwt {
     secret_key: String,
 }
 
@@ -19,7 +20,7 @@ impl Jwt {
         }
     }
 
-    pub(crate) fn create(&self, user_id: usize) -> Result<String, jsonwebtoken::errors::Error> {
+    pub(crate) fn create(&self, user_id: i64) -> Result<String, jsonwebtoken::errors::Error> {
         let now = now();
         let iat = now.unix_timestamp() as usize;
         let exp = now

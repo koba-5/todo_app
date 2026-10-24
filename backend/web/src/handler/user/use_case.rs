@@ -4,19 +4,22 @@ use crate::handler::error::Cause::{BadRequest, InternalServerError};
 use crate::handler::error::Error;
 use crate::handler::user::get_response::GetResponse;
 use crate::handler::user::post_request::PostRequest;
+use crate::handler::user::post_response::PostResponse;
+use crate::utils::jwt::Jwt;
 use crate::utils::tx_executor::TxExecutor;
-use std::sync::Arc;
 
 pub(super) struct UserUseCase<R: UserRepository> {
-    tx_executor: Arc<TxExecutor>,
+    tx_executor: TxExecutor,
+    jwt: Jwt,
     user_repository: R,
 }
 
 impl<R: UserRepository> UserUseCase<R> {
-    pub(super) fn new(tx_executor: Arc<TxExecutor>, user_repository: R) -> Self {
+    pub(super) fn new(tx_executor: TxExecutor, jwt: Jwt, user_repository: R) -> Self {
         Self {
             tx_executor,
-            user_repository,
+            jwt,
+            user_repository
         }
     }
 
@@ -36,15 +39,21 @@ impl<R: UserRepository> UserUseCase<R> {
         Ok(response)
     }
 
-    pub(super) async fn post(&self, request: &PostRequest) -> Result<(), Error> {
+    pub(super) async fn post(&self, request: &PostRequest) -> Result<PostResponse, Error> {
         let user = User::new(&request.name, &request.email, &request.password)
             .map_err(|e| Error::new(BadRequest, &e.message))?;
 
-        self.tx_executor
+        let user_id = self
+            .tx_executor
             .execute(async |tx| Ok(self.user_repository.save(tx, user).await?))
             .await
             .map_err(|_| Error::new(InternalServerError, "internal server error"))?;
 
-        Ok(())
+        Ok(PostResponse {
+            token: self
+                .jwt
+                .create(user_id)
+                .map_err(|_| Error::new(InternalServerError, "internal server error"))?,
+        })
     }
 }
