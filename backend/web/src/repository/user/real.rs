@@ -1,6 +1,6 @@
 use crate::domain::user::User;
 use crate::domain::user::repository::UserRepository;
-use sqlx::{PgTransaction, Postgres, Transaction};
+use sqlx::{Postgres, Transaction};
 
 pub(crate) struct UserRepositoryReal;
 

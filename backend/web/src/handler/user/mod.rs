@@ -1,8 +1,6 @@
 use crate::app::app_state::AppState;
 use crate::handler::user::handler::UserHandler;
-use crate::utils::tx_executor::TxExecutor;
 use axum::routing::{MethodRouter, get};
-use std::sync::Arc;
 
 mod get_response;
 mod handler;

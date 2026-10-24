@@ -53,7 +53,7 @@ impl<R: UserRepository> UserUseCase<R> {
             token: self
                 .jwt
                 .create(user_id)
-                .map_err(|e| Error::new(InternalServerError, "internal server error"))?,
+                .map_err(|_| Error::new(InternalServerError, "internal server error"))?,
         })
     }
 }

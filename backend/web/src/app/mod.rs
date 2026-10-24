@@ -1,14 +1,12 @@
 use crate::app::app_state::AppState;
 use crate::utils::config::from_env;
 use crate::utils::logger::Logger;
-use crate::utils::tx_executor::TxExecutor;
 use axum::body::Body;
 use axum::http::Request;
 use axum::middleware::Next;
 use axum::response::Response;
-use axum::{Extension, Router, middleware, serve};
+use axum::{Router, middleware, serve};
 use std::net::SocketAddr;
-use std::sync::Arc;
 use tokio::net::TcpListener;
 
 pub mod app_state;

@@ -4,13 +4,11 @@ use crate::handler::error::Error;
 use crate::handler::user::post_request::PostRequest;
 use crate::handler::user::use_case::UserUseCase;
 use crate::repository::user::real::UserRepositoryReal;
-use crate::utils::tx_executor::TxExecutor;
 use axum::Json;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use std::collections::HashMap;
-use std::sync::Arc;
 
 pub(super) struct UserHandler;
 
