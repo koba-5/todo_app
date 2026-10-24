@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+argon2 = { version = "0.6.0" }
+jsonwebtoken = { version = "11.1.0", features = ["rust_crypto"] }
+password-hash = { version = "0.6.1" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154" }
+sqlx = { version = "0.9", features = ["postgres", "runtime-tokio", "tls-rustls", "macros"] }
+time = { version = "0.3.55" }
