@@ -29,3 +29,9 @@ services:
     container_name: flyway-info
     <<: *flyway
     command: info
+  schemaspy:
+    image: schemaspy/schemaspy
+    container_name: schemaspy
+    volumes:
+      - ./schemaspy/properties/schemaspy.properties:/schemaspy.properties
+      - ./schemaspy/output:/output
