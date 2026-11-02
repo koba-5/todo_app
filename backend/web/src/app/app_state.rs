@@ -1,5 +1,5 @@
-use crate::db::Executor;
 use crate::model::event_log::repository::EventLogRepository;
+use crate::repository::executor::Executor;
 use std::sync::Arc;
 
 #[derive(Clone)]

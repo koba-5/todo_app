@@ -5,8 +5,8 @@ use std::sync::Arc;
 use web::app::app_start;
 use web::app::app_state::AppState;
 use web::config::Config;
-use web::db::Executor;
 use web::repository::event_log::EventLogRepositoryImpl;
+use web::repository::executor::Executor;
 
 #[tokio::main]
 async fn main() {
