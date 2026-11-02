@@ -6,13 +6,14 @@ use web::app::app_start;
 use web::app::app_state::AppState;
 use web::config::Config;
 use web::db::Executor;
+use web::repository::event_log::EventLogRepositoryImpl;
 
 #[tokio::main]
 async fn main() {
     let config = Config::new(from_env("SERVER_ADDR"), from_env("DATABASE_URL"));
     let pool = Arc::new(conn(&config).await);
 
-    app_start(config, AppState::new(Arc::new(Executor::new(pool)))).await;
+    app_start(config, app_state(pool)).await;
 }
 
 fn from_env(key: &str) -> String {
@@ -25,4 +26,11 @@ async fn conn(config: &Config) -> Pool<Postgres> {
         .connect(&config.database_url)
         .await
         .unwrap_or_else(|_| panic!("Error connecting to {}", config.database_url))
+}
+
+fn app_state(pool: Arc<Pool<Postgres>>) -> AppState {
+    AppState::new(
+        Arc::new(Executor::new(pool)),
+        Arc::new(EventLogRepositoryImpl),
+    )
 }
