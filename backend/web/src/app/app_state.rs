@@ -1,9 +1,9 @@
-use crate::repository::executor::Executor;
+use crate::db::Executor;
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
-    executor: Arc<Executor>,
+    pub(crate) executor: Arc<Executor>,
 }
 
 impl AppState {

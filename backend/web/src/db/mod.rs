@@ -1,7 +1,10 @@
-use crate::repository::error::Error;
-use crate::repository::error::Error::Unexpected;
+use crate::db::Error::Unexpected;
 use sqlx::{PgConnection, Pool, Postgres};
 use std::sync::Arc;
+
+pub enum Error {
+    Unexpected(String),
+}
 
 #[derive(Clone)]
 pub struct Executor {
@@ -13,7 +16,7 @@ impl Executor {
         Self { pool }
     }
 
-    async fn with_commit<F, T>(self, f: F) -> Result<T, Error>
+    pub(crate) async fn with_commit<F, T>(&self, f: F) -> Result<T, Error>
     where
         F: AsyncFnOnce(&mut PgConnection) -> Result<T, Error>,
     {

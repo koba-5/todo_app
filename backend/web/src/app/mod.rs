@@ -11,6 +11,8 @@ pub async fn app_start(config: Config, app_state: AppState) {
         .await
         .unwrap_or_else(|_| panic!("failed to bind to {}", &config.server_addr));
 
+    println!("Listening on {}", &config.server_addr);
+
     serve(listener, app)
         .await
         .unwrap_or_else(|_| panic!("failed to serve connection from {}", &config.server_addr));
