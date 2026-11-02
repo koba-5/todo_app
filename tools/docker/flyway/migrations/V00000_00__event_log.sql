@@ -4,6 +4,5 @@ CREATE TABLE public."event_log" (
     "user_id" BIGINT NOT NULL,
     "event_type" VARCHAR(50) NOT NULL,
     "event_name" VARCHAR(50) NOT NULL,
-    "event_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

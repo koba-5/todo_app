@@ -1,10 +1,7 @@
-use crate::db::Error::Unexpected;
+use crate::model::Error;
+use crate::model::Error::Unexpected;
 use sqlx::{PgConnection, Pool, Postgres};
 use std::sync::Arc;
-
-pub enum Error {
-    Unexpected(String),
-}
 
 #[derive(Clone)]
 pub struct Executor {
