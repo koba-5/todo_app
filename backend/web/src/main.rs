@@ -1,9 +1,11 @@
+use axum::{Router, serve};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
 use std::env::var;
 use std::sync::Arc;
-use web::app::app_start;
+use tokio::net::TcpListener;
 use web::app::app_state::AppState;
+use web::app::build;
 use web::config::Config;
 use web::repository::event_log::EventLogRepositoryImpl;
 use web::repository::executor::Executor;
@@ -13,7 +15,10 @@ async fn main() {
     let config = Config::new(from_env("SERVER_ADDR"), from_env("DATABASE_URL"));
     let pool = Arc::new(conn(&config).await);
 
-    app_start(config, app_state(pool)).await;
+    let app = build(app_state(pool)).await;
+    let listener = bind(&config).await;
+    println!("Listening on {}", &config.server_addr);
+    start(listener, app).await;
 }
 
 fn from_env(key: &str) -> String {
@@ -33,4 +38,16 @@ fn app_state(pool: Arc<Pool<Postgres>>) -> AppState {
         Arc::new(Executor::new(pool)),
         Arc::new(EventLogRepositoryImpl),
     )
+}
+
+async fn bind(config: &Config) -> TcpListener {
+    TcpListener::bind(&config.server_addr)
+        .await
+        .unwrap_or_else(|_| panic!("failed to bind to {}", &config.server_addr))
+}
+
+async fn start(listener: TcpListener, app: Router) {
+    serve(listener, app)
+        .await
+        .unwrap_or_else(|_| panic!("server failed to start"));
 }
