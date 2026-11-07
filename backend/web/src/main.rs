@@ -7,9 +7,9 @@ use tokio::net::TcpListener;
 use web::app::app_state::AppState;
 use web::app::build;
 use web::config::Config;
-use web::logger::info;
 use web::repository::event_log::EventLogRepositoryImpl;
 use web::repository::executor::Executor;
+use web::utils::logger::info;
 
 #[tokio::main]
 async fn main() {

@@ -1,6 +1,6 @@
 use crate::app::app_state::AppState;
 use crate::handler::event_log::post_handler;
-use crate::logger::info;
+use crate::utils::logger::info;
 use axum::extract::Request;
 use axum::middleware::Next;
 use axum::response::Response;
