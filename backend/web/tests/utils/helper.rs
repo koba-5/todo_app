@@ -12,9 +12,7 @@ use web::repository::executor::Executor;
 pub(crate) async fn setup() -> Router {
     let config = config();
     let pool = conn(&config).await;
-    let app = build(app_state(Arc::new(pool))).await;
-
-    app
+    build(app_state(Arc::new(pool))).await
 }
 
 fn config() -> Config {
