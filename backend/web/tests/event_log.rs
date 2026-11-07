@@ -8,6 +8,7 @@ use std::sync::Arc;
 use tower::Service;
 use web::app::app_state::AppState;
 use web::app::build;
+use web::app::jwt::Jwt;
 use web::config::Config;
 use web::repository::event_log::EventLogRepositoryImpl;
 use web::repository::executor::Executor;
@@ -15,12 +16,16 @@ use web::repository::executor::Executor;
 #[tokio::test]
 async fn post() {
     // before
-    let config = Config::new(from_env("SERVER_ADDR"), from_env("DATABASE_URL"));
+    let config = Config::new(
+        from_env("SERVER_ADDR"),
+        from_env("DATABASE_URL"),
+        from_env("JWT_SECRET_KEY"),
+    );
     let pool = Arc::new(conn(&config).await);
-    let mut app = build(app_state(pool)).await;
+    let mut app = build(app_state(pool, &config)).await;
 
     // given
-    let request = Request::post("/event_log")
+    let request = Request::post("/public/event_log")
         .header("content-type", "application/json")
         .body(
             Body::from(to_vec(&json!({"session_id":"xxx", "user_id":1, "event_type":"click", "event_name":"submit"})).unwrap())).unwrap();
@@ -36,8 +41,9 @@ fn from_env(key: &str) -> String {
     var(key).unwrap_or_else(|_| panic!("no such env var: {}", key))
 }
 
-fn app_state(pool: Arc<Pool<Postgres>>) -> AppState {
+fn app_state(pool: Arc<Pool<Postgres>>, config: &Config) -> AppState {
     AppState::new(
+        Arc::new(Jwt::new(&config.secret)),
         Arc::new(Executor::new(pool)),
         Arc::new(EventLogRepositoryImpl),
     )
