@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+argon2 = { version = "0.6.0" }
 async-trait = { version = "0.1.92" }
 axum = { version = "0.8.9" }
 serde = { version = "1.0.229", features = ["derive"] }
