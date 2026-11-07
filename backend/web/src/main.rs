@@ -9,6 +9,7 @@ use web::app::build;
 use web::config::Config;
 use web::repository::event_log::EventLogRepositoryImpl;
 use web::repository::executor::Executor;
+use web::utils::logger::info;
 
 #[tokio::main]
 async fn main() {
@@ -17,7 +18,7 @@ async fn main() {
 
     let app = build(app_state(pool)).await;
     let listener = bind(&config).await;
-    println!("Listening on {}", &config.server_addr);
+    info(format!("Listening on {}", &config.server_addr));
     start(listener, app).await;
 }
 
