@@ -1,6 +1,6 @@
 pub mod repository;
 
-pub struct EventLog {
+pub(crate) struct EventLog {
     pub(crate) session_id: String,
     pub(crate) user_id: i64,
     pub(crate) event_type: String,
