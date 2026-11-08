@@ -1,5 +1,5 @@
 pub mod event_log;
 
-pub(crate) enum Error {
+pub enum Error {
     Unexpected(String),
 }
