@@ -52,13 +52,13 @@ async fn auth(State(app_state): State<AppState>, mut req: Request, next: Next) -
         }
     };
 
-    let claims = match jwt.verify_jwt(token) {
-        Ok(c) => c,
+    let user_id = match jwt.verify_jwt(token) {
+        Ok(v) => v,
         Err(_) => {
             return StatusCode::UNAUTHORIZED.into_response();
         }
     };
 
-    req.extensions_mut().insert(claims);
+    req.extensions_mut().insert(user_id);
     next.run(req).await
 }

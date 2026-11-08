@@ -22,7 +22,7 @@ impl Jwt {
             .unix_timestamp() as usize;
 
         let claims = Claims {
-            sub: user_id.to_string(),
+            sub: user_id,
             exp: exp,
         };
 
@@ -33,7 +33,7 @@ impl Jwt {
         )
     }
 
-    pub(super) fn verify_jwt(&self, token: &str) -> Result<String, Error> {
+    pub(super) fn verify_jwt(&self, token: &str) -> Result<i64, Error> {
         let token_data = decode::<Claims>(
             token,
             &DecodingKey::from_secret(self.secret.as_bytes()),
