@@ -1,5 +1,6 @@
 use crate::app::app_state::AppState;
 use crate::handler::event_log;
+use crate::handler::user;
 use crate::utils::logger::info;
 use axum::extract::{Request, State};
 use axum::http::{StatusCode, header};
@@ -13,10 +14,12 @@ pub(super) mod claims;
 pub mod jwt;
 
 pub async fn build(app_state: AppState) -> Router {
-    let public_router = Router::new().route("/event_log", post(event_log::post_handler));
+    let public_router = Router::new()
+        .route("/event_log", post(event_log::post_handler))
+        .route("/users", post(user::post_handler));
 
     let private_router = Router::new()
-        .route("/users", post(event_log::post_handler))
+        .route("/users", post(user::post_handler))
         .layer(middleware::from_fn_with_state(app_state.clone(), auth));
 
     Router::new()

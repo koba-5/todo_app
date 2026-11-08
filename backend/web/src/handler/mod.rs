@@ -4,14 +4,17 @@ use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 
 pub(crate) mod event_log;
+pub(crate) mod user;
 
 pub(crate) enum Error {
+    BadRequest(String),
     InternalServerError(String),
 }
 
 impl Error {
     pub(super) fn info(self) -> (StatusCode, String) {
         match self {
+            Self::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
             Self::InternalServerError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
         }
     }

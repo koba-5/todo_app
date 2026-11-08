@@ -10,6 +10,7 @@ use web::app::jwt::Jwt;
 use web::config::Config;
 use web::repository::event_log::EventLogRepositoryImpl;
 use web::repository::executor::Executor;
+use web::repository::user::UserRepositoryImpl;
 use web::utils::logger::info;
 
 #[tokio::main]
@@ -44,6 +45,7 @@ fn app_state(pool: Arc<Pool<Postgres>>, config: &Config) -> AppState {
         Arc::new(Jwt::new(config)),
         Arc::new(Executor::new(pool)),
         Arc::new(EventLogRepositoryImpl),
+        Arc::new(UserRepositoryImpl),
     )
 }
 
