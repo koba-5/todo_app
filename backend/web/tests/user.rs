@@ -1,9 +1,9 @@
 mod utils;
 
 use crate::utils::helper::setup;
-use axum::body::Body;
+use axum::body::{Body, to_bytes};
 use axum::http::{Request, StatusCode};
-use serde_json::{json, to_vec};
+use serde_json::{Value, json, to_vec};
 use tower::Service;
 
 #[tokio::test]
@@ -27,4 +27,8 @@ async fn post() {
 
     // then
     assert_eq!(actual.status(), StatusCode::OK);
+
+    let body_bytes = to_bytes(actual.into_body(), usize::MAX).await.unwrap();
+    let body: Value = serde_json::from_slice(&body_bytes).unwrap();
+    assert!(body.get("token").is_some());
 }
