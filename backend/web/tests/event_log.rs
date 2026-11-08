@@ -12,7 +12,7 @@ async fn post() {
     let mut app = setup().await;
 
     // given
-    let request = Request::post("/event_log")
+    let request = Request::post("/public/event_log")
         .header("content-type", "application/json")
         .body(Body::from(
             to_vec(&json!(
